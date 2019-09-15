@@ -19,7 +19,7 @@ USB Host Shield 2.0 library are required to connect the Arduino board to the
 ESP. This program provides the minimum features to use avrdude with its -Pnet:
 network option to upload HEX files to an attached Uno or Mega 2560 over WiFi.
 
-Uno -USB- USB Host mini -SPI- ESP8266 -WiFi- avrdude -Pnet:<IP addr>:2323
+`Uno -USB- USB Host mini -SPI- ESP8266 -WiFi- avrdude -Pnet:<IP addr>:2323`
 
 The program listens for TCP connections on port 23 and 2323. Connections on
 port 2323 reset the attached board so it is ready for Flash burning. Use
@@ -35,21 +35,26 @@ avresplink is a BASH shell script that runs avrdude with the correct parameters
 depending on the board. This can be used with this program as well as with
 esp-link.
 
-$ avresplink 192.168.x.y Blink.ino.standard.hex
+`$ avresplink 192.168.x.y Blink.ino.standard.hex`
 
 This will run avrdude with the following parameters. The parameters that are
 the same for all boards are not shown.
+
+```
 -patmega328p
 -carduino
 -Pnet:192.168.x.y:2323
 -Uflash:w:Blink.ino.standard.hex:i
+```
 
-$ avresplink 192.168.x.y Blink.ino.mega.hex
+`$ avresplink 192.168.x.y Blink.ino.mega.hex`
 
 This will run avrdude with the following parameters. The parameters that are
 the same for all boards are not shown.
+
+```
 -patmega2560
 -cwiring
 -Pnet:192.168.x.y:2323
 -Uflash:w:Blink.ino.mega.hex:i
-
+```
