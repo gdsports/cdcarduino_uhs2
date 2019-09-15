@@ -1,0 +1,93 @@
+#!/bin/bash
+# Where to find avrdude and avrdude.conf. Both are copied from a recent
+# version of the Arduino IDE. Mostly tested with Uno and a little with
+# Mega.
+AVRDUDE_HOME=~/bin
+# The IP address or hostname of the ESP
+ARDUINO_HOST=$1
+# The name of the HEX file. Examples when using the IDE
+# Sketch | Export compiled Binary option.
+# Blink.ino.standard.hex    Uno/atmegap328p
+# Blink.ino.mega.hex        Mega/atmegap2560
+# Blink.ino.leonardo.hex    Leonardo/atmegap32u4
+ARDUINO_HEX=$2
+# Name of CPU such as atmega328p. Optional, if it
+# can be derived from the HEX filename.
+ARDUINO_CPU=$3
+# Programmer which is derived from the HEX filename
+# and/or CPU name
+ARDUINO_PROG="arduino"
+
+if [ -z "${ARDUINO_CPU}" ]
+then
+    ARDUINO_CPU="atmega328p"
+fi
+
+if [[ "${ARDUINO_HEX}" =~ 'standard' ]]
+then
+    ARDUINO_PROG="arduino"
+    if [[ -z "${ARDUINO_CPU}" ]]
+    then
+        ARDUINO_CPU="atmega328p"
+    fi
+fi
+
+if [[ "${ARDUINO_HEX}" =~ 'mega' ]]
+then
+    ARDUINO_PROG="wiring"
+    if [[ -z "${ARDUINO_CPU}" ]]
+    then
+        ARDUINO_CPU="atmega2560"
+    fi
+fi
+
+if [[ "${ARDUINO_HEX}" =~ 'leonardo' ]]
+then
+    ARDUINO_PROG="avr109"
+    if [[ -z "${ARDUINO_CPU}" ]]
+    then
+        ARDUINO_CPU="atmega32u4"
+    fi
+fi
+
+if [[ "${ARDUINO_HEX}" =~ '4809' ]]
+then
+    ARDUINO_PROG="jtag2updi"
+    if [[ -z "${ARDUINO_CPU}" ]]
+    then
+        ARDUINO_CPU="atmega4809"
+    fi
+fi
+
+if [[ "${ARDUINO_CPU}" =~ '2560' ]]
+then
+    ARDUINO_PROG="wiring"
+fi
+
+if [[ "${ARDUINO_CPU}" =~ '32u4' ]]
+then
+    ARDUINO_PROG="avr109"
+fi
+
+if [[ "${ARDUINO_CPU}" =~ '4809' ]]
+then
+    ARDUINO_PROG="jtag2updi"
+fi
+
+re='[-A-Za-z0-9.]+'
+if [[ ! "${ARDUINO_HOST}" =~ $re ]]
+then
+  echo "ERROR: hostname ${ARDUINO_HOST} is not a valid hostname or ip address" >&2
+  exit 1
+fi
+
+if [[ ! -r "${ARDUINO_HEX}" ]]
+then
+  echo "ERROR: cannot read hex file (${ARDUINO_HEX})" >&2
+  exit 1
+fi
+
+echo ${ARDUINO_HOST} ${ARDUINO_HEX} ${ARDUINO_CPU} ${ARDUINO_PROG}
+${AVRDUDE_HOME}/avrdude \
+  -DV -p${ARDUINO_CPU} -Pnet:${ARDUINO_HOST}:2323 -c${ARDUINO_PROG}  -b115200 \
+  -C ${AVRDUDE_HOME}/avrdude.conf -Uflash:w:${ARDUINO_HEX}:i

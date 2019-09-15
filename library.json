@@ -1,0 +1,41 @@
+{
+  "name": "CDC-Arduino",
+  "keywords": "usb, host, acm, cdc, arduino",
+  "description": "CDC ACM Arduino driver for the USB Host Shield Library 2.0",
+  "authors":
+  [
+    {
+      "name": "gdsports",
+      "email": "gdsports625@gmail.com",
+      "url": "",
+      "maintainer": true
+    }
+  ],
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/gdsports/cdcarduino_uhs2"
+  },
+  "version": "0.0.1",
+  "license": "MIT",
+  "examples":
+  [
+    "examples/*/*.ino",
+    "examples/*/*/*.ino"
+  ],
+  "frameworks":
+  [
+    "arduino"
+  ],
+  "platforms":
+  [
+    "atmelavr",
+    "intel_arc32",
+    "teensy",
+    "atmelsam",
+    "nordicnrf51",
+    "ststm32",
+    "espressif8266",
+    "espressif32"
+  ]
+}
