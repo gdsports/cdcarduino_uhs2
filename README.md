@@ -58,3 +58,26 @@ the same for all boards are not shown.
 -Pnet:192.168.x.y:2323
 -Uflash:w:Blink.ino.mega.hex:i
 ```
+
+## Hardware Example
+
+![NodeMCU 1.0 and USB host mini boards](images/cdcarduino.jpg)
+
+* [NodeMCU devkit 1.0 board](https://github.com/nodemcu/nodemcu-devkit-v1.0)
+* [USB host mini board](https://chome.nerpa.tech/usb-host-shield-hardware-manual/)
+
+See the USB Host Shield Hardware Manual to see how to change VBUS from 3.3V to 5V.
+A trace must be cut.
+
+
+|Power   |NodeMCU        |USB host mini
+|--------|---------------|-------------
+|5V      |VIN            |VBUS (cut trace)
+|GND     |GND            |GND
+|        |3V3            |VCC
+|        |D1,#5          |INT
+|        |D5,#14,HSCLK   |CLK
+|        |D6,#12,HMISO   |MISO
+|        |D7,#13,HMOSI   |MOSI
+|        |D8,#15,HCS     |SS
+|        |               |MAX_RST (pullup resistor to 3V3)
